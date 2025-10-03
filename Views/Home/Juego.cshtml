@@ -1,0 +1,71 @@
+@{
+    ViewData["Title"] = "Jugar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string username = "";
+    int puntaje = 0;
+    int nro = 1;
+
+    if (ViewBag.Username != null)
+    {
+        username = ViewBag.Username;
+    }
+    if (ViewBag.Puntaje != null)
+    {
+        puntaje = ViewBag.Puntaje;
+    }
+    if (ViewBag.Numero != null)
+    {
+        nro = ViewBag.Numero;
+    }
+
+    Pregunta pregunta = ViewBag.Pregunta;
+    List<Respuesta> respuestas = ViewBag.Respuestas;
+}
+
+@if (pregunta == null)
+{
+    <h2>No hay más preguntas disponibles</h2>
+    <p><a href='@Url.Action("ConfigurarJuego","Juego")'>Volver a jugar</a></p>
+}
+else
+{
+    <p>Usuario: @username</p>
+    <p>Puntaje: @puntaje</p>
+
+    <h3>Pregunta @nro</h3>
+    <p>@pregunta.Enunciado</p>
+
+    <form id="formRespuesta" method="post" action='@Url.Action("VerificarRespuesta","Juego")'>
+        <input type="hidden" name="idPregunta" value="@pregunta.IdPregunta" />
+        <input type="hidden" id="idRespuesta" name="idRespuesta" />
+
+        <div id="botonesRespuestas">
+            @if (respuestas != null)
+            {
+                foreach (Respuesta respuesta in respuestas)
+                {
+                    <button type="button" class="opcion" id="@respuesta.IdRespuesta">
+                        @respuesta.Opcion) @respuesta.Contenido
+                    </button>
+                }
+            }
+        </div>
+
+        <br />
+        <button type="submit">Responder</button>
+    </form>
+
+  
+      
+       
+
+       
+        document.getElementById("formRespuesta").addEventListener("submit", function (e) {
+            if (document.getElementById("idRespuesta").value === "") {
+                alert("Debes seleccionar una respuesta antes de enviar.");
+                e.preventDefault(); 
+            }
+        });
+    </script>
+}

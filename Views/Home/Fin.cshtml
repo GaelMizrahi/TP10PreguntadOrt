@@ -1,0 +1,17 @@
+@{
+    ViewData["Title"] = "Fin del Juego";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string username = ViewBag.Username;
+    int puntaje = ViewBag.Puntaje;
+}
+
+<h1>Juego terminado</h1>
+
+<p>Usuario: @username</p>
+<p>Puntaje final: @puntaje</p>
+
+ <p>
+        <a href='@Url.Action("ConfigurarJuego","Juego")'>
+            Volver a Jugar
+        </a>
+ </p>

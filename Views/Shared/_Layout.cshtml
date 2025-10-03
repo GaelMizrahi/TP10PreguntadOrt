@@ -4,13 +4,18 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - NombreProyecto</title>
+    <title>@ViewData["Title"] - PreguntadORT</title>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 
 <body>
     <header>
-        NombreProyecto
+        PreguntadORT
+        <img src="~/imagenes/logo.png" alt="Logo del juego" />
+
+        <!-- Links de navegación -->
+        <a href='@Url.Action("Index","Juego")'>Inicio</a>
+        <a href='@Url.Action("ConfigurarJuego","Juego")'>Jugar</a>
     </header>
 
     <main role="main">
@@ -18,7 +23,7 @@
     </main>
 
     <footer>
-        &copy; @DateTime.Now.Year - NombreProyecto
+        &copy; @DateTime.Now.Year - PreguntadORT
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

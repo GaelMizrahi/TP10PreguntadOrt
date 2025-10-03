@@ -1,3 +1,33 @@
 ﻿@using TP10
 @using TP10.Models
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PreguntadORT</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+
+<body>
+    <header>
+        PreguntadORT
+        <img src="~/imgs/logo.png" alt="Logo PreguntadORT" />
+        <a href='@Url.Action("Index","Juego")'>INICIO</a>
+        <a href='@Url.Action("ConfigurarJuego","Juego")'>JUGAR</a>
+    </header>
+
+    <main role="main">
+        @RenderBody()
+    </main>
+
+    <footer>
+        &copy; @DateTime.Now.Year - PreguntadORT
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,8 +1,16 @@
 ﻿@{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Inicio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div>
-    <h1>Index</h1>
-    <p>Bienvenidos al sitio web de NombreProyecto</p>
+    <img src="~/imgs/logo.png" alt="Logo del juego" />
+
+    <h1>¡Bienvenido a PreguntadORT!</h1>
+
+    <p>
+        <a href='@Url.Action("ConfigurarJuego","Juego")'>
+            Comenzar a Jugar
+        </a>
+    </p>
 </div>
