@@ -2,80 +2,90 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using TP10_PreguntadORT.Models;
 
-namespace TP10.Controllers;
-
-public class HomeController : Controller
+namespace TP10_PreguntadORT.Controllers
 {
-    private static Juego juego = new Juego();
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    public class HomeController : Controller
     {
-        _logger = logger;
-    }
+        private readonly ILogger<HomeController> _logger;
 
-    public IActionResult Index()
-    {
-         return View();
-    }
+        public HomeController(ILogger<HomeController> logger)
+        {
+            _logger = logger;
+        }
+
+        
+        public IActionResult Index()
+        {
+            return View(); 
+        }
+
+       
         public IActionResult ConfigurarJuego()
         {
-            ViewBag.Categorias= BD.ObtenerCategorias();
-            return View();
+            ViewBag.Categorias = BD.ObtenerCategorias();
+            return View(); 
         }
-         [HttpGet]
+
+       
+        [HttpGet]
         public IActionResult Comenzar(string username, int categoria)
         {
-           
-            juego.CargarPartida(username, categoria);
-           
+            Juego.CargarPartida(username, categoria);
             return RedirectToAction("Jugar");
         }
+
+      
         public IActionResult Jugar()
-{
-    
-    Pregunta pregunta = juego.ObtenerProximaPregunta();
+        {
+            Pregunta pregunta = Juego.ObtenerProximaPregunta();
 
+            if (pregunta == null)
+            {
+              
+                ViewBag.Username = Juego.Username;
+                ViewBag.Puntaje = Juego.PuntajeActual;
+                return View("Fin"); 
+            }
 
-    if (pregunta == null)
-    {
-        return View("Fin", juego); 
-    }
+            List<Respuesta> respuestas = Juego.ObtenerProximasRespuestas(pregunta.IdPregunta);
 
-    
-    List<Respuesta> respuestas = juego.ObtenerProximasRespuestas(pregunta.IdPregunta);
+            ViewBag.Username = Juego.Username;
+            ViewBag.Puntaje = Juego.PuntajeActual;
+            ViewBag.Numero = Juego.ContadorNroPreguntaActual + 1; 
+            ViewBag.Pregunta = pregunta;
+            ViewBag.Respuestas = respuestas;
 
-    ViewBag.Username = juego.Username;
-    ViewBag.Puntaje = juego.PuntajeActual;
-    ViewBag.Numero = juego.ContadorNroPreguntaActual + 1; 
-    ViewBag.Pregunta = pregunta;
-    ViewBag.Respuestas = respuestas;
+            return View(); 
+        }
 
-    return View();
-}
- [HttpPost]
+        
+        [HttpPost]
         public IActionResult VerificarRespuesta(int idPregunta, int idRespuesta)
         {
-           
-            bool correcta = juego.VerificarRespuesta(idRespuesta);
+            bool correcta = Juego.VerificarRespuesta(idRespuesta);
 
-          
-            string contenidoCorrecto = "";
-            foreach (Respuesta respuesta in juego.ListaRespuestas)
+           
+            string textoCorrecto = "";
+            if (Juego.ListaRespuestas != null)
             {
-                if (respuesta.Correcta)
+                int i;
+                for (i = 0; i < Juego.ListaRespuestas.Count; i++)
                 {
-                    contenidoCorrecto = respuesta.Contenido;
-                    
+                    Respuesta respuesta = Juego.ListaRespuestas[i];
+                    if (respuesta.Correcta)
+                    {
+                        textoCorrecto = respuesta.Contenido;
+                       
+                    }
                 }
             }
 
             ViewBag.Correcta = correcta;
-            ViewBag.RespuestaCorrecta = contenidoCorrecto;
-            ViewBag.Puntaje = juego.PuntajeActual;
-            ViewBag.Username = juego.Username;
+            ViewBag.RespuestaCorrecta = textoCorrecto;
+            ViewBag.Puntaje = Juego.PuntajeActual;
+            ViewBag.Username = Juego.Username;
 
             return View("Respuesta"); 
         }
     }
-
+}

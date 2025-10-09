@@ -1,6 +1,9 @@
+@using TP10_PreguntadORT.Models
 @{
     ViewData["Title"] = "Jugar";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+
+    
 
     string username = "";
     int puntaje = 0;
@@ -36,7 +39,7 @@ else
     <h3>Pregunta @nro</h3>
     <p>@pregunta.Enunciado</p>
 
-    <form id="formRespuesta" method="post" action='@Url.Action("VerificarRespuesta","Juego")'>
+    <form id="formRespuesta" method="post" action='@Url.Action("VerificarRespuesta","Home")'>
         <input type="hidden" name="idPregunta" value="@pregunta.IdPregunta" />
         <input type="hidden" id="idRespuesta" name="idRespuesta" />
 
@@ -46,26 +49,16 @@ else
                 foreach (Respuesta respuesta in respuestas)
                 {
                     <button type="button" class="opcion" id="@respuesta.IdRespuesta">
-                        @respuesta.Opcion) @respuesta.Contenido
+                        @respuesta.Opcion , @respuesta.Contenido
                     </button>
                 }
             }
         </div>
 
-        <br />
+      
         <button type="submit">Responder</button>
     </form>
+    
 
-  
-      
-       
-
-       
-        document.getElementById("formRespuesta").addEventListener("submit", function (e) {
-            if (document.getElementById("idRespuesta").value === "") {
-                alert("Debes seleccionar una respuesta antes de enviar.");
-                e.preventDefault(); 
-            }
-        });
-    </script>
+    
 }

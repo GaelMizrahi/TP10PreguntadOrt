@@ -19,19 +19,22 @@ using Dapper;
         }
         public static List<Pregunta> ObtenerPreguntas(int categoria)
         {
+            List<Pregunta> preguntas = null;
              using (SqlConnection connection  = new SqlConnection(_connectionString))
             {        
                 if (categoria == -1)
                 {
                     string sql = "SELECT IdPregunta, IdCategoria, Enunciado, Foto FROM Preguntas ORDER BY IdPregunta";
-                    return connection.Query<Pregunta>(sql).ToList();
+                    preguntas = connection.Query<Pregunta>(sql).ToList();
                 }
                 else
                 {
                     string sql = "SELECT IdPregunta, IdCategoria, Enunciado, Foto FROM Preguntas WHERE IdCategoria = @categoria ORDER BY IdPregunta";
-                    return connection.Query<Pregunta>(sql, new { categoria }).ToList();
+                    preguntas = connection.Query<Pregunta>(sql, new { categoria }).ToList();
                 }
             }
+            Console.WriteLine(preguntas.Count);
+            return preguntas;
         }
         
 

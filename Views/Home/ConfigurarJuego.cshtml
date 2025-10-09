@@ -1,16 +1,18 @@
 @using TP10_PreguntadORT.Models
 @{
     ViewData["Title"] = "Configurar Juego";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+
+
 List<Categoria> categorias = (ViewBag.Categorias as List<Categoria>) ?? new List<Categoria>();
 }
 
 <h1>Configurar Juego</h1>
 
-<form method="get" action='@Url.Action("Comenzar","Juego")'>
+<form method="get" action='@Url.Action("Comenzar","Home")'>
     <p>
         <h2>Nombre de usuario:</h2>
-        <input type="text" id="username" name="username" required />
+        <input type="text" id="username" name="username" />
     </p>
 
     <p>
@@ -19,7 +21,9 @@ List<Categoria> categorias = (ViewBag.Categorias as List<Categoria>) ?? new List
             <option value="-1">Todas</option>
             @foreach (Categoria categoria in categorias)
             {
-        <option value="@categoria.IdCategoria">@categoria.nombre</option>
+                <option 
+                value="@categoria.IdCategoria">@categoria.nombre
+                </option>
                 
             }
         </select>

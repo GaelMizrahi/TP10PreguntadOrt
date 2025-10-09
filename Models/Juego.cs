@@ -1,78 +1,90 @@
 namespace TP10_PreguntadORT.Models
 {
-    public class Juego
+    public static class Juego
     {
-        public string Username { get; private set; }
-        public int PuntajeActual { get; private set; }
-        public int CantidadPreguntasCorrectas { get; private set; }
-        public int ContadorNroPreguntaActual { get; private set; }
-        public Pregunta PreguntaActual { get; private set; }
-        public List<Pregunta> ListaPreguntas { get; private set; } 
-        public List<Respuesta> ListaRespuestas { get; private set; } 
+       
+        public static string Username { get; private set; } = "";
+        public static int PuntajeActual { get; private set; }
+        public static int CantidadPreguntasCorrectas { get; private set; }
+        public static int ContadorNroPreguntaActual { get; private set; }
+        public static Pregunta PreguntaActual { get; private set; }
+        public static List<Pregunta> ListaPreguntas { get; private set; } = new List<Pregunta>();
+        public static List<Respuesta> ListaRespuestas { get; private set; } = new List<Respuesta>();
 
-        private void InicializarJuego()
+       
+        private static void InicializarJuego()
         {
             Username = "";
             PuntajeActual = 0;
             CantidadPreguntasCorrectas = 0;
             ContadorNroPreguntaActual = 0;
             PreguntaActual = null;
-            ListaPreguntas.Clear();
-            ListaRespuestas.Clear();
+            ListaRespuestas = new List<Respuesta>();
         }
-        public List<Categoria> ObtenerCategorias()
+
+        public static List<Categoria> ObtenerCategorias()
         {
             return BD.ObtenerCategorias();
         }
 
-        public void CargarPartida(string username, int categoria)
+        public static void CargarPartida(string username, int categoria)
         {
             InicializarJuego();
             Username = username;
             ListaPreguntas = BD.ObtenerPreguntas(categoria);
-            if (ListaPreguntas.Count > 0) 
+
+            if (ListaPreguntas != null && ListaPreguntas.Count > 0)
             {
                 PreguntaActual = ListaPreguntas[0];
             }
         }
 
-        public Pregunta ObtenerProximaPregunta()
+        public static Pregunta ObtenerProximaPregunta()
         {
-            if (ContadorNroPreguntaActual >= ListaPreguntas.Count) 
+            if (ListaPreguntas == null || ContadorNroPreguntaActual >= ListaPreguntas.Count)
             {
                 return null;
             }
+
             PreguntaActual = ListaPreguntas[ContadorNroPreguntaActual];
             return PreguntaActual;
         }
 
-        public List<Respuesta> ObtenerProximasRespuestas(int idPregunta)
+        public static List<Respuesta> ObtenerProximasRespuestas(int idPregunta)
         {
             ListaRespuestas = BD.ObtenerRespuestas(idPregunta);
             return ListaRespuestas;
         }
 
-        public bool VerificarRespuesta(int idRespuesta)
+        public static bool VerificarRespuesta(int idRespuesta)
         {
             bool laHizoCorrecta = false;
-              foreach (Respuesta respuesta in ListaRespuestas)
-    {
-        if (respuesta.IdRespuesta == idRespuesta)
-        {
-            laHizoCorrecta = respuesta.Correcta;               
-                    
-        }
-    }
-            if (laHizoCorrecta == true)
+
+            if (ListaRespuestas != null)
+            {
+                foreach (Respuesta respuesta in ListaRespuestas)
+                {
+                    if (respuesta.IdRespuesta == idRespuesta)
+                    {
+                        laHizoCorrecta = respuesta.Correcta;
+                     
+                    }
+                }
+            }
+
+            if (laHizoCorrecta)
             {
                 PuntajeActual += 100;
                 CantidadPreguntasCorrectas++;
             }
+
             ContadorNroPreguntaActual++;
-            if (ContadorNroPreguntaActual < ListaPreguntas.Count)
+
+            if (ListaPreguntas != null && ContadorNroPreguntaActual < ListaPreguntas.Count)
                 PreguntaActual = ListaPreguntas[ContadorNroPreguntaActual];
             else
                 PreguntaActual = null;
+
             return laHizoCorrecta;
         }
     }
