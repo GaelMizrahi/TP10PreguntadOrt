@@ -1,26 +1,10 @@
 @using TP10_PreguntadORT.Models
 @{
     ViewData["Title"] = "Jugar";
-        Layout = "~/Views/Shared/_Layout.cshtml";
 
-    
-
-    string username = "";
-    int puntaje = 0;
-    int nro = 1;
-
-    if (ViewBag.Username != null)
-    {
-        username = ViewBag.Username;
-    }
-    if (ViewBag.Puntaje != null)
-    {
-        puntaje = ViewBag.Puntaje;
-    }
-    if (ViewBag.Numero != null)
-    {
-        nro = ViewBag.Numero;
-    }
+    string username = ViewBag.Username  "";
+    int puntaje = ViewBag.Puntaje  0;
+    int nro = ViewBag.Numero  1;
 
     Pregunta pregunta = ViewBag.Pregunta;
     List<Respuesta> respuestas = ViewBag.Respuestas;
@@ -29,36 +13,32 @@
 @if (pregunta == null)
 {
     <h2>No hay más preguntas disponibles</h2>
-    <p><a href='@Url.Action("ConfigurarJuego","Juego")'>Volver a jugar</a></p>
+    <p><a href='@Url.Action("ConfigurarJuego","Home")'>Volver a jugar</a></p>
 }
 else
 {
-    <p>Usuario: @username</p>
-    <p>Puntaje: @puntaje</p>
+    <h1>PreguntadORT</h1>
+    <p>Usuario: <strong>@username</strong></p>
+    <p id="puntaje">Puntaje: @puntaje</p>
 
     <h3>Pregunta @nro</h3>
     <p>@pregunta.Enunciado</p>
 
-    <form id="formRespuesta" method="post" action='@Url.Action("VerificarRespuesta","Home")'>
-        <input type="hidden" name="idPregunta" value="@pregunta.IdPregunta" />
-        <input type="hidden" id="idRespuesta" name="idRespuesta" />
+    <div id="respuestas">
+        @foreach (var respuesta in respuestas)
+        {
+            <button type="button"
+                    onclick="mostrarResultado('@respuesta.Contenido', @respuesta.Correcta.ToString().ToLower())">
+                @respuesta.Opcion) @respuesta.Contenido
+            </button>
+        }
+    </div>
 
-        <div id="botonesRespuestas">
-            @if (respuestas != null)
-            {
-                foreach (Respuesta respuesta in respuestas)
-                {
-                    <button type="button" class="opcion" id="@respuesta.IdRespuesta">
-                        @respuesta.Opcion , @respuesta.Contenido
-                    </button>
-                }
-            }
-        </div>
+    <p id="mensaje"></p>
 
-      
-        <button type="submit">Responder</button>
-    </form>
-    
-
-    
+    <br />
+    <a href='@Url.Action("Jugar","Home")'>Siguiente pregunta</a>
 }
+
+@section Scripts {
+<script src="js/site.js"></script>}

@@ -23,7 +23,7 @@ namespace TP10_PreguntadORT.Controllers
         public IActionResult ConfigurarJuego()
         {
             ViewBag.Categorias = BD.ObtenerCategorias();
-            return View(); 
+            return View("ConfigurarJuego"); 
         }
 
        
@@ -55,7 +55,7 @@ namespace TP10_PreguntadORT.Controllers
             ViewBag.Pregunta = pregunta;
             ViewBag.Respuestas = respuestas;
 
-            return View(); 
+            return View("Juego"); 
         }
 
         
@@ -85,7 +85,7 @@ namespace TP10_PreguntadORT.Controllers
             ViewBag.Puntaje = Juego.PuntajeActual;
             ViewBag.Username = Juego.Username;
 
-            return View("Respuesta"); 
+            return View("Fin"); 
         }
     }
 }

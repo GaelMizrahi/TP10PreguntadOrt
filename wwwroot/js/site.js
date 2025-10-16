@@ -1,4 +1,14 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿var puntajeActual = 0;
 
-// Write your JavaScript code.
+
+function mostrarResultado(texto, esCorrecta) {
+    if (esCorrecta) {
+        alert("¡Correcto!");
+        puntajeActual = puntajeActual + 100;
+        document.getElementById("puntaje").innerHTML = "Puntaje: " + puntajeActual;
+        document.getElementById("mensaje").innerHTML = " Bien hecho, era: " + texto;
+    } else {
+        alert("Incorrecto");
+        document.getElementById("mensaje").innerHTML = " Incorrecto. Era otra respuesta.";
+    }
+}
