@@ -2,9 +2,9 @@
 @{
     ViewData["Title"] = "Jugar";
 
-    string username = ViewBag.Username  "";
-    int puntaje = ViewBag.Puntaje  0;
-    int nro = ViewBag.Numero  1;
+    string username = ViewBag.Username;
+    int puntaje = ViewBag.Puntaje;
+    int nro = ViewBag.Numero;
 
     Pregunta pregunta = ViewBag.Pregunta;
     List<Respuesta> respuestas = ViewBag.Respuestas;
@@ -18,27 +18,29 @@
 else
 {
     <h1>PreguntadORT</h1>
-    <p>Usuario: <strong>@username</strong></p>
-    <p id="puntaje">Puntaje: @puntaje</p>
+    <p>Usuario: <h2>@username</h2></p>
+    <p>Puntaje: @puntaje</p>
 
     <h3>Pregunta @nro</h3>
     <p>@pregunta.Enunciado</p>
 
-    <div id="respuestas">
-        @foreach (var respuesta in respuestas)
-        {
-            <button type="button"
-                    onclick="mostrarResultado('@respuesta.Contenido', @respuesta.Correcta.ToString().ToLower())">
-                @respuesta.Opcion) @respuesta.Contenido
-            </button>
-        }
-    </div>
+    <form method="post" action='@Url.Action("VerificarRespuesta","Home")'>
+        <select id="idRespuesta" name="idRespuesta" required>
+            <option value="">Seleccioná una respuesta</option>
+            @foreach (Respuesta respuesta in respuestas)
+            {
+                <option value="@respuesta.IdRespuesta">@respuesta.Opcion) @respuesta.Contenido</option>
+            }
+        </select>
 
-    <p id="mensaje"></p>
+        <input type="hidden" name="idPregunta" value="@pregunta.IdPregunta" />
+        
+        <button type="submit">Responder</button>
+    </form>
 
-    <br />
-    <a href='@Url.Action("Jugar","Home")'>Siguiente pregunta</a>
+    <form method="post" action='@Url.Action("VerificarRespuesta","Home")'>
+        <input type="hidden" name="idPregunta" value="@pregunta.IdPregunta" />
+        <input type="hidden" name="idRespuesta" value="-1" />
+        <button type="submit">Finalizar</button>
+    </form>
 }
-
-@section Scripts {
-<script src="js/site.js"></script>}

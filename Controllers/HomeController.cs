@@ -61,31 +61,33 @@ namespace TP10_PreguntadORT.Controllers
         
         [HttpPost]
         public IActionResult VerificarRespuesta(int idPregunta, int idRespuesta)
-        {
-            bool correcta = Juego.VerificarRespuesta(idRespuesta);
+{
+    if (idRespuesta == -1)
+    {
+        ViewBag.Username = Juego.Username;
+        ViewBag.Puntaje  = Juego.PuntajeActual;
+        return View("Fin");
+    }
 
-           
-            string textoCorrecto = "";
-            if (Juego.ListaRespuestas != null)
-            {
-                int i;
-                for (i = 0; i < Juego.ListaRespuestas.Count; i++)
-                {
-                    Respuesta respuesta = Juego.ListaRespuestas[i];
-                    if (respuesta.Correcta)
-                    {
-                        textoCorrecto = respuesta.Contenido;
-                       
-                    }
-                }
-            }
+    bool correcta = Juego.VerificarRespuesta(idRespuesta);
 
-            ViewBag.Correcta = correcta;
-            ViewBag.RespuestaCorrecta = textoCorrecto;
-            ViewBag.Puntaje = Juego.PuntajeActual;
-            ViewBag.Username = Juego.Username;
+    string textoCorrecto = "";
+    if (Juego.ListaRespuestas != null)
+    {
+        foreach (var respuesta in Juego.ListaRespuestas)
+            if (respuesta.Correcta) 
+            { textoCorrecto = respuesta.Contenido; }
+    }
 
-            return View("Fin"); 
-        }
+    ViewBag.Correcta = correcta;
+    ViewBag.RespuestaCorrecta = textoCorrecto;
+    ViewBag.Puntaje = Juego.PuntajeActual;
+    ViewBag.Username = Juego.Username;
+
+   
+    return View("Respuesta");
+}
+
+
     }
 }

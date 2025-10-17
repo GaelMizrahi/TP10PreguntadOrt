@@ -1,0 +1,25 @@
+@{
+    ViewData["Title"] = "Respuesta";
+    string username = ViewBag.Username;
+    int puntaje = ViewBag.Puntaje;
+    bool correcta = ViewBag.Correcta ;
+    string correctaTxt = ViewBag.RespuestaCorrecta ;
+}
+<h1>Resultado</h1>
+
+@if (correcta)
+{
+    <h2 >¡Correcto!</h2>
+}
+else
+{
+    <h2 >Incorrecto</h2>
+    <p>La respuesta correcta era: <h2>@correctaTxt</h2></p>
+}
+
+<p>Usuario: @username</p>
+<p>Puntaje: @puntaje</p>
+
+<p>
+    <a href='@Url.Action("Jugar","Home")'>Siguiente pregunta</a>
+</p>
